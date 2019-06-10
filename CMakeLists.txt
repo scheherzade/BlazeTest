@@ -26,16 +26,18 @@ include_directories(${BLAS_INCLUDE_DIR})
 #add_library(libopenblas SHARED IMPORTED)
 #set_target_properties(libopenblas PROPERTIES IMPORTED_LOCATION "/home/shahrzad/src/OpenBLAS/libopenblas.so")
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+#set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 
 
 
-find_package(blaze REQUIRED)
+#find_package(blaze REQUIRED)
 
 add_definitions(-DBLAZE_USE_HPX_THREADS)
+#
+include_directories(/home/shahrzad/lib/blaze_shahrzad/include/)
+#include_directories(/home/shahrzad/lib/blaze_tensor/include/)
 
-include_directories(/home/shahrzad/lib/blaze_pdiehl/include/)
 
 #add_executable(BlazeTest main.cpp)
 
@@ -45,7 +47,7 @@ find_package(HPX REQUIRED)
 #hpx_setup_target(BlazeTest)
 add_hpx_executable(BlazeTest SOURCES main.cpp)
 #
-target_link_libraries(BlazeTest_exe ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
+target_link_libraries(BlazeTest PUBLIC ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 
 
 
