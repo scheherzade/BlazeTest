@@ -26,28 +26,30 @@ include_directories(${BLAS_INCLUDE_DIR})
 #add_library(libopenblas SHARED IMPORTED)
 #set_target_properties(libopenblas PROPERTIES IMPORTED_LOCATION "/home/shahrzad/src/OpenBLAS/libopenblas.so")
 
-#set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD )
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 
 
 
 #find_package(blaze REQUIRED)
 
-add_definitions(-DBLAZE_USE_HPX_THREADS)
+#add_definitions(-DBLAZE_USE_HPX_THREADS)
+add_definitions(-DBLAZE_USE_FUNCTION_TRACES)
+add_definitions(-DBBLAS_WITH_MKL)
 #
-include_directories(/home/shahrzad/lib/blaze_shahrzad/include/)
+include_directories(/home/shahrzad/lib/blaze_bblas/blaze/include/)
 #include_directories(/home/shahrzad/lib/blaze_tensor/include/)
+include_directories(/home/shahrzad/src/BBLAS/include/)
+include_directories(/opt/intel/compilers_and_libraries/linux/mkl/include/)
+add_executable(BlazeTest main.cpp)
 
-
-#add_executable(BlazeTest main.cpp)
-
-find_package(HPX REQUIRED)
+#find_package(HPX REQUIRED)
 #include_directories(${HPX_INCLUDE_DIRS})
 #link_directories(${HPX_LIBRARY_DIR})
 #hpx_setup_target(BlazeTest)
-add_hpx_executable(BlazeTest SOURCES main.cpp)
+#add_hpx_executable(BlazeTest SOURCES main.cpp)
 #
-target_link_libraries(BlazeTest PUBLIC ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
+#target_link_libraries(BlazeTest PUBLIC ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES} -lboost_graph -lboost_regex)
 
 
 
