@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
-project(BlazeTest)
+project(BlazeTest CUDA CXX)
+find_package(CUDA)
 
 #find_package(OpenMP)
 #if (OPENMP_FOUND)
@@ -34,10 +35,13 @@ include_directories(${BLAS_INCLUDE_DIR})
 #find_package(blaze REQUIRED)
 
 add_definitions(-DBLAZE_USE_HPX_THREADS)
-#
-include_directories(/home/shahrzad/lib/blaze_shahrzad/include/)
-#include_directories(/home/shahrzad/lib/blaze_tensor/include/)
+#add_definitions(-DNEW_BACKEND)
 
+#
+include_directories(/home/shahrzad/lib/blaze/include/)
+include_directories(/home/shahrzad/src/blaze_cuda/)
+include_directories(/home/shahrzad/src/thrust/)
+include_directories(${CUDA_INCLUDE_DIRS})
 
 #add_executable(BlazeTest main.cpp)
 
@@ -45,10 +49,13 @@ find_package(HPX REQUIRED)
 #include_directories(${HPX_INCLUDE_DIRS})
 #link_directories(${HPX_LIBRARY_DIR})
 #hpx_setup_target(BlazeTest)
-add_hpx_executable(BlazeTest SOURCES main.cpp)
+add_hpx_executable(BlazeTest SOURCES main.cu)
+#set_target_properties(
+#        BlazeTest
+#        PROPERTIES
+#        CUDA_SEPARABLE_COMPILATION ON)
+target_link_libraries(BlazeTest PUBLIC ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES} ${CUDA_LIBRARIES})
 #
-target_link_libraries(BlazeTest PUBLIC ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
-
 
 
 get_cmake_property(_variableNames VARIABLES)
