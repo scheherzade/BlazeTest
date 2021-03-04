@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
-project(BlazeTest CUDA CXX)
+enable_language(CUDA)
+project(BlazeTest CXX)
 find_package(CUDA)
 
 #find_package(OpenMP)
@@ -39,7 +40,7 @@ add_definitions(-DBLAZE_USE_HPX_THREADS)
 
 #
 include_directories(/home/shahrzad/lib/blaze/include/)
-include_directories(/home/shahrzad/src/blaze_cuda/)
+#include_directories(/home/shahrzad/src/blaze_cuda/)
 include_directories(/home/shahrzad/src/thrust/)
 include_directories(${CUDA_INCLUDE_DIRS})
 
@@ -57,6 +58,7 @@ add_hpx_executable(BlazeTest SOURCES main.cu)
 target_link_libraries(BlazeTest PUBLIC ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES} ${CUDA_LIBRARIES})
 #
 
+MESSAGE(STATUS "NVCC flags: ${CUDA_NVCC_FLAGS}" )
 
 get_cmake_property(_variableNames VARIABLES)
 list (SORT _variableNames)

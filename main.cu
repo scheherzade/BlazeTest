@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <blaze/math/traits/AddTrait.h>
-#include <blaze_cuda/Blaze.h>
+#include <blaze/math/smp/hpx/cuda/util/CUDAAllocator.h>
 using namespace blaze;
 #include <variant>
 #include <string>
@@ -28,15 +28,19 @@ int main() {
 #endif
     using blaze::AlignedAllocator;
     using Group11 = blaze::GroupTag<11>;
-    using CUDAGroup = blaze::GroupTag<10>;
-    using blaze_cuda::CUDAAllocator;
+    using CUDAGroup = blaze::GroupTag<9>;
+//    using blaze_cuda::CUDAAllocator;
 
-    std::size_t n = 6;
-    blaze::DynamicMatrix<double, rowMajor, CUDAAllocator<double>, CUDAGroup> C{{1,2},{3,4}};
-    blaze::DynamicMatrix<double, rowMajor, CUDAAllocator<double>, CUDAGroup> Q{{3,0},{1,9}};
+#ifndef __CUDACC_EXTENDED_LAMBDA__
+#error "please compile with --expt-extended-lambda"
+#endif
+
+    std::size_t n = 600;
+    blaze::DynamicMatrix<double, rowMajor, blaze::CUDAAllocator<double>, CUDAGroup> C(n, n, 3.0);
+    blaze::DynamicMatrix<double, rowMajor, blaze::CUDAAllocator<double>, CUDAGroup> Q(n, n, 3.0);
 
 
-//    blaze::DynamicMatrix<double, rowMajor, AlignedAllocator<double>, Group11> H = C + Q;
+    blaze::DynamicMatrix<double, rowMajor, blaze::CUDAAllocator<double>, CUDAGroup> H = C + Q;
 
     blaze::DynamicMatrix<double> B(n, n, 3.0);
     blaze::DynamicMatrix<double> D(n, n, 0.0);
