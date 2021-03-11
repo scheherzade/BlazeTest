@@ -27,24 +27,30 @@ int main() {
     std::cout << "None" << std::endl;
 #endif
     using blaze::AlignedAllocator;
-    using Group11 = blaze::GroupTag<11>;
+//    using Group11 = blaze::GroupTag<11>;
     using CUDAGroup = blaze::GroupTag<9>;
-//    using blaze_cuda::CUDAAllocator;
+//    using blaze::CUDAAllocator;
 
-#ifndef __CUDACC_EXTENDED_LAMBDA__
-#error "please compile with --expt-extended-lambda"
-#endif
 
     std::size_t n = 600;
+#if 1
+    #ifndef __CUDACC_EXTENDED_LAMBDA__
+    #error "please compile with --expt-extended-lambda"
+    #endif
+
     blaze::DynamicMatrix<double, rowMajor, blaze::CUDAAllocator<double>, CUDAGroup> C(n, n, 3.0);
     blaze::DynamicMatrix<double, rowMajor, blaze::CUDAAllocator<double>, CUDAGroup> Q(n, n, 3.0);
 
 
     blaze::DynamicMatrix<double, rowMajor, blaze::CUDAAllocator<double>, CUDAGroup> H = C + Q;
-
-    blaze::DynamicMatrix<double> B(n, n, 3.0);
-    blaze::DynamicMatrix<double> D(n, n, 0.0);
-    blaze::DynamicMatrix<double> E(n, n, 2.0);
+#else
+//
+    blaze::DynamicMatrix<double,rowMajor, blaze::AlignedAllocator<double>, blaze::GroupTag<9>> B(n, n, 3.0);
+    blaze::DynamicMatrix<double,rowMajor, blaze::AlignedAllocator<double>, blaze::GroupTag<9>> D(n, n, 0.0);
+    blaze::DynamicMatrix<double,rowMajor, blaze::AlignedAllocator<double>, blaze::GroupTag<9>> E(n, n, 2.0);
+    auto k = B + E;
+    D = k;
+#endif
 //    blaze::DynamicTensor<double> a{{{1,2,3,4},{5,6,7,8}},{{9,10,11,12},{13,14,15,16}},{{17,18,19,20},{21,22,23,24}}};
 //    blaze::DynamicTensor<double> b{{{20,19},{18,17}},{{16,15},{14,13}},{{12,11},{10,9}},{{8,7},{6,5}},{{4,3},{2,1}}};
 //
@@ -79,8 +85,7 @@ int main() {
 //    std::cout<<d.rows()<<","<<d.column()<<","<<d.pages()<<std::endl;
 
 
-    auto k = B + E;
-    D = k;
+
 //    std::cout<<D<<std::endl;
 
     return 0;

@@ -59,7 +59,7 @@ target_link_libraries(BlazeTest PUBLIC ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES} ${C
 #
 
 MESSAGE(STATUS "NVCC flags: ${CUDA_NVCC_FLAGS}" )
-
+SET(CMAKE_CUDA_FLAGS "-arch=sm_61 --expt-extended-lambda --expt-relaxed-constexpr" )
 get_cmake_property(_variableNames VARIABLES)
 list (SORT _variableNames)
 foreach (_variableName ${_variableNames})
