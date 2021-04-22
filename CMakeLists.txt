@@ -38,6 +38,9 @@ add_definitions(-DBLAZE_USE_HPX_THREADS)
 include_directories(/home/shahrzad/lib/blaze_shahrzad/include/)
 #include_directories(/home/shahrzad/lib/blaze_tensor/include/)
 
+if (USE_NEW_BACKEND)
+    ADD_DEFINITIONS(-DBLAZE_NEW_BACKEND)
+endif()
 
 #add_executable(BlazeTest main.cpp)
 
